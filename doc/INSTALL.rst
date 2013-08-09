@@ -37,9 +37,9 @@ The `default.cfg` file should look like (replace with your user name)::
 
   (hmc-web-dev)$ cat ~/.buildout/default.cfg
   [buildout]
-  eggs-directory = /home/moorepants/.buildout/eggs
-  download-cache = /home/moorepants/.buildout/downloads
-  extends-cache = /home/moorepants/.buildout/extends
+  eggs-directory = /home/<username>/.buildout/eggs
+  download-cache = /home/<username>/.buildout/downloads
+  extends-cache = /home/<username>/.buildout/extends
 
 May be able to use `eggs-directory = ${env:HOME}/.buildout/eggs`
 
@@ -247,29 +247,29 @@ Now ssh in::
 
 Now create users so they can log in::
 
-   # adduser moorepants
-   # sudo mkdir /home/moorepants/.ssh
-   # sudo chmod 700 /home/moorepants/.ssh
-   # chown moorepants:moorepants /home/moorepants/.ssh
+   # adduser <username>
+   # sudo mkdir /home/<username>/.ssh
+   # sudo chmod 700 /home/<username>/.ssh
+   # chown <username>:<username> /home/<username>/.ssh
 
 Now go back to my personal machine and scp my public key to the
-/home/moorepants/.ssh/authorized_keys on the server::
+/home/<username>/.ssh/authorized_keys on the server::
 
-   scp -i ~/.ec2/hmckey.pem ~/.ssh/ida_ras.pub ubuntu@54.221.204.249:/home/moorepants/.ssh/authorized_keys
+   scp -i ~/.ec2/hmckey.pem ~/.ssh/ida_ras.pub ubuntu@54.221.204.249:/home/<username>/.ssh/authorized_keys
 
 Back to the server and do this on the server for correct permissions::
 
    # chmod 600 .ssh/authorized_keys
-   # chown moorepants:moorepants .ssh/authorized_keys
+   # chown <username>:<username> .ssh/authorized_keys
 
 Give me super user permissions::
 
-   # sudo adduser moorepants sudo
+   # sudo adduser <username> sudo
    # exit
 
-Now log in with moorepants::
+Now log in with <username>::
 
-   $ ssh moorepants@54.221.204.249
+   $ ssh <username>@54.221.204.249
 
 Install some stuff::
 
@@ -307,7 +307,7 @@ Buildout run with::
 
 Upload the  nginx configuration file and create a symlink for it to enable::
 
-    $ scp hmc.csuohio.edu.conf 54.221.204.249:/home/moorepants/hmc.csuohio.edu.conf
+    $ scp hmc.csuohio.edu.conf 54.221.204.249:/home/<username>/hmc.csuohio.edu.conf
     $ ssh 54.221.204.249
     # sudo mv hmc.csuohio.edu.conf /etc/nginx/sites-available/hmc.csuohio.edu.conf
     # sudo ln -s /etc/nginx/sites-available/hmc.csuohio.edu.conf /etc/nginx/sites-enabled/hmc.csuohio.edu.conf
