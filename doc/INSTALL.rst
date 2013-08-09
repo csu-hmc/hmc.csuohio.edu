@@ -1,16 +1,12 @@
 Development Setup on Ubuntu 13.04
 =================================
 
-You need Python 2.6.8 but it fails to build on Ubuntu 13.04, so use this ppa::
-
-   $ sudo add-apt-repository ppa:fkrull/deadsnakes
-   $ sudo apt-get update
-   $ sudo apt-get install python2.6 python2.6-dev
+Note: Plone 4.2+ supports Python2.7.
 
 Make a virtual environment for your Plone development (assumes you have
 virtualenvwrapper already installed)::
 
-   $ mkvirtualenv -p /usr/bin/python2.6 hmc-web-dev
+   $ mkvirtualenv hmc-web-dev
 
 Make sure you have PIL dependencies::
 
@@ -290,11 +286,56 @@ Install nginx::
 
    # sudo aptitude install nginx
 
-For Plone::
+Get the dependencies for Plone::
 
-sudo apt-get install python-setuptools python-dev build-essential libssl-dev
-libxml2-dev libxslt1-dev libbz2-dev
+   # sudo apt-get install python-dev build-essential wv poppler-utils libxml2-dev libxslt1-dev libssl-dev libreadline-dev libjpeg-dev libz-dev libfreetype6 libfreetype6-dev
 
-sudo apt-get install libjpeg62-dev libreadline-gplv2-dev wv poppler-utils
-python-imaging
+Install Plone from the Unified installer::
 
+   # wget https://launchpad.net/plone/4.3/4.3.1/+download/Plone-4.3.1r1-UnifiedInstaller.tgz
+   # tar -zxvf Plone-4.3.1r1-UnifiedInstaller.tgz
+   # cd Plone-4.3.1r1-UnifiedInstaller/
+   # sudo ./install.sh standalone
+
+Plone can then be started with::
+
+   # sudo -u plone_daemon /usr/local/Plone/zinstance/bin/{start|stop|restart|status}
+
+Buildout run with::
+
+   # sudo -u plone_buildout /usr/local/Plone/zinstance/bin/builout
+
+Upload the  nginx configuration file and create a symlink for it to enable::
+
+    $ scp hmc.csuohio.edu.conf 54.221.204.249:/home/moorepants/hmc.csuohio.edu.conf
+    $ ssh 54.221.204.249
+    # sudo mv hmc.csuohio.edu.conf /etc/nginx/sites-available/hmc.csuohio.edu.conf
+    # sudo ln -s /etc/nginx/sites-available/hmc.csuohio.edu.conf /etc/nginx/sites-enabled/hmc.csuohio.edu.conf
+    # sudo /etc/init.d/nginx restart
+
+You my gmail account for now for the mail smtp in Plone. Google now blocks
+attempts to login and I got supciisou login warnings from goolge. COuld fingure
+this out until I did this:
+http://angelsurfer.blogspot.com/2013/04/gmail-smtp-setup-to-moodle.html
+Went to some website that open google account for loggin in.
+
+smtp: smpt.gmail.com
+port: 587
+username: username@gmail.com
+password: <gmail passowrd>
+
+I aslo Checked the Force TTL in the ZMI Mailhost.
+
+Setup the init scripts::
+
+   # sudo cp ~/Plone-4.3.1r1-UnifiedInstaller/init_scripts/ubuntu/plone-standalone /etc/init.d/plone
+   # sudo chmod 755 /etc/init.d/plone
+   # sudo update-rc.d plone defaults
+
+Setup backups and offsite data dumps.
+
+Setup ufw firewall.
+
+Setup regular database packing.
+
+Now copy in my custom buildout recipe or start modifying the buildout one.
