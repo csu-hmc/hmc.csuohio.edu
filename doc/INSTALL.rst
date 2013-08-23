@@ -339,3 +339,37 @@ Setup ufw firewall.
 Setup regular database packing.
 
 Now copy in my custom buildout recipe or start modifying the buildout one.
+
+Change admin password in the root ZMI (8080:manage).
+
+Config
+======
+
+Security settings
+Use email address as login name
+
+Enable user folders
+
+TinyMCE
+
+Paste from word
+paste from plain text
+
+Editing
+Show 'Short Name' on content? yes
+
+In Plone 4, there are two steps you need to take in order to easily embed content:
+
+First, go to Site Setup>TinyMCE Visual Editor then click on the Toolbar tab.
+
+    Enable the checkbox next to "Insert/edit Media"
+    Scroll down to the bottom of the screen and click "Save"
+
+Then, go to Site Setup>HTML Filtering
+
+    Add iframe to custom tags.
+    Scroll down to the bottom of the screen and click "Save"
+
+With these changes made, you should be able to click newly-added "Embed Media" button in the TinyMCE toolbar.  You can paste in the URL of a YouTube video, and TinyMCE will do the rest for you!
+
+I add the diazo product for theming
