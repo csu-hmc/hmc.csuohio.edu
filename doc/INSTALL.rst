@@ -373,3 +373,10 @@ Then, go to Site Setup>HTML Filtering
 With these changes made, you should be able to click newly-added "Embed Media" button in the TinyMCE toolbar.  You can paste in the URL of a YouTube video, and TinyMCE will do the rest for you!
 
 I add the diazo product for theming
+
+Backup
+======
+
+This look promising for backup to S3:
+
+http://blog.linuxacademy.com/linux/how-to-backup-linux-to-amazon-s3-using-s3cmd/
