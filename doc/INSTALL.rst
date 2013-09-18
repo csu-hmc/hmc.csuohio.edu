@@ -374,6 +374,11 @@ With these changes made, you should be able to click newly-added "Embed Media" b
 
 I add the diazo product for theming
 
+enabled global comments
+comment transformation: intellgient text
+
+allow caption images
+
 Backup
 ======
 
