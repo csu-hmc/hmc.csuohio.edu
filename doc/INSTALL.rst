@@ -321,7 +321,7 @@ Went to some website that open google account for loggin in.
 
 smtp: smpt.gmail.com
 port: 587
-username: username@gmail.com
+username: <username>@gmail.com
 password: <gmail passowrd>
 
 I aslo Checked the Force TTL in the ZMI Mailhost.
@@ -378,6 +378,21 @@ enabled global comments
 comment transformation: intellgient text
 
 allow caption images
+
+For quick mathjax support I put::
+
+   <script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+     TeX: { equationNumbers: { autoNumber: "AMS" } }
+   });
+   </script>
+   <script type="text/javascript"
+     src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+   </script>
+
+In the site settings>JavaScript for web statistics support box. This should be
+moved to the HEAD block in the template and I should think about whether we
+need to have auto numbered equations.
 
 Backup
 ======
