@@ -400,3 +400,24 @@ Backup
 This look promising for backup to S3:
 
 http://blog.linuxacademy.com/linux/how-to-backup-linux-to-amazon-s3-using-s3cmd/
+
+The current offsite backup scheme is this:
+
+On the 1st and 16th day of each month the website is incrementally backed up
+and the backup ciles are copied to the
+hmc.csuohio.edu:/home/moorepants/tmp_backup directory via the buildout
+usercrontab:
+
+[backupcronjob]
+recipe = z3c.recipe.usercrontab
+times = 1 3 1,16 * *
+command = ${buildout:directory}/bin/backup && bash /home/moorepants/copy_backup_to_home.sh
+
+On the 2nd and 17th day of the month a cron job runs a script on the
+moorepants.info server that uses rsync to copy the files from
+hmc.csuohio.edu:/home/moorepants/tmp_backup to
+moorepants.info:/home/moorepants/website-backups/hmc.csuohio.edu.
+
+There is a group on hmc.csuohio.edu called hmc_backup that contains
+plone_daemon and moorepants. /home/moorepants/tmp_backup has permission set so
+that the hmc_backup group can access it.
