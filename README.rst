@@ -387,7 +387,7 @@ For quick mathjax support I put::
    });
    </script>
    <script type="text/javascript"
-     src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
    </script>
 
 In the site settings>JavaScript for web statistics support box. This should be
@@ -397,27 +397,53 @@ need to have auto numbered equations.
 Backup
 ======
 
-This look promising for backup to S3:
+The current offsite backup scheme is the following:
 
-http://blog.linuxacademy.com/linux/how-to-backup-linux-to-amazon-s3-using-s3cmd/
+I'm using the collective.recipe.backup buildout recipe which ultimately runs
+the repozo recipe with sane defaults. Repozo allows you take backups without
+stopping Plone/Zope. I use the bin/backup script which does incremental
+backups. This creates backups in the following directories:
 
-The current offsite backup scheme is this:
+- ``/usr/local/Plone/zinstance/var/backups``
+- ``/usr/local/Plone/zinstance/var/blobstoragebackups``
 
-On the 1st and 16th day of each month the website is incrementally backed up
-and the backup ciles are copied to the
-hmc.csuohio.edu:/home/moorepants/tmp_backup directory via the buildout
-usercrontab:
+And if you run the ``bin/snapshotbackup`` manually then the backups will be in
+these directories:
 
-[backupcronjob]
-recipe = z3c.recipe.usercrontab
-times = 1 3 1,16 * *
-command = ${buildout:directory}/bin/backup && bash /home/moorepants/copy_backup_to_home.sh
+- ``/usr/local/Plone/zinstance/var/snapshotbackups``
+- ``/usr/local/Plone/zinstance/var/blobstoragebackups``
 
-On the 2nd and 17th day of the month a cron job runs a script on the
+The zc.buildout.crontab recipe runs a cronjob that executes the bin/backup
+script under the ``plone_buildout`` user on the 1st and 16th day of each month
+at 3 am. This buildout recipe sets that up::
+
+   [backupcronjob]
+   recipe = z3c.recipe.usercrontab
+   times = 1 3 1,16 * *
+   command = ${buildout:directory}/bin/backup && bash /home/moorepants/copy_backup_to_home.sh
+
+The ``copy_backup_to_home.sh`` runs after the backup script simply copies the
+pertinent directories to ``moorepants``'s home directoy. The permissions of the
+files are such that ``plone_buildout`` owns them and ``plone_group`` can read
+all of the files. I added ``moorepants`` to the ``plone_group`` so that he can
+read the files. There is also a ``hmc_backup`` group which has executable
+permissions to teh ``copy_backup_to_home.sh`` script.
+
+https://pypi.python.org/pypi/z3c.recipe.usercrontab
+
+https://pypi.python.org/pypi/collective.recipe.backup
+
+Then on the 2nd and 17th day of the month a cron job runs a script on the
 moorepants.info server that uses rsync to copy the files from
-hmc.csuohio.edu:/home/moorepants/tmp_backup to
-moorepants.info:/home/moorepants/website-backups/hmc.csuohio.edu.
+``hmc.csuohio.edu:/home/moorepants/tmp_backup`` to
+``moorepants.info:/home/moorepants/website-backups/hmc.csuohio.edu``.
 
 There is a group on hmc.csuohio.edu called hmc_backup that contains
 plone_daemon and moorepants. /home/moorepants/tmp_backup has permission set so
 that the hmc_backup group can access it.
+
+Other
+
+This look promising for backup to S3:
+
+http://blog.linuxacademy.com/linux/how-to-backup-linux-to-amazon-s3-using-s3cmd/
