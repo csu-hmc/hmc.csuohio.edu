@@ -6,5 +6,6 @@ do
 	# Don't check owner (o), group (g), or permmission (p) for copy.
 	rsync -rltD --delete /usr/local/Plone/zinstance/var/$DIR /home/moorepants/tmp_backup
 done
-chmod -R g+rw /home/moorepants/tmp_backup
+find /home/moorepants/tmp_backup -type d -exec chmod 770 {} \;
+find /home/moorepants/tmp_backup -type f -exec chmod 660 {} \;
 chown -R plone_daemon:hmc_backup /home/moorepants/tmp_backup
