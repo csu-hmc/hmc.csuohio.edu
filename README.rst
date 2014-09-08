@@ -332,6 +332,10 @@ Setup the init scripts::
    # sudo chmod 755 /etc/init.d/plone
    # sudo update-rc.d plone defaults
 
+Note that the init.d script needs to be modified to have ``sudo -u
+plone_daemon`` so that the service runs under plone_daemon and not root. See
+the ``plone`` script included in this repo.
+
 Setup backups and offsite data dumps.
 
 Setup ufw firewall.
