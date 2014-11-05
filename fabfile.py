@@ -24,7 +24,7 @@ def update_nginx_conf():
 
 
 def plonectl(arg):
-    """Start, stop, restart."""
+    """Option are: start, stop, restart, etc."""
     plonectl = os.path.join(zinstance_dir, 'bin/plonectl')
     sudo('{} {}'.format(plonectl, arg), user='plone_daemon')
 
@@ -35,7 +35,7 @@ def push_buildout_files():
                       f.startswith('.')]
     for file_name in cfg_file_names:
         file_path_on_server = os.path.join(zinstance_dir, file_name)
-        # TODO : change this put to rsync
+        # TODO : change this put with rsync
         put(file_name, file_path_on_server, use_sudo=True)
         sudo('chown plone_buildout:plone_group {}'.format(file_path_on_server))
         sudo('chmod go-rw {}'.format(file_path_on_server))
