@@ -208,6 +208,12 @@ Note that the init.d script needs to be modified to have ``sudo -u
 plone_daemon`` so that the service runs under plone_daemon and not root. See
 the ``plone`` script included in this repo.
 
+Also setup Plone to restart every Monday morning. Add this line::
+
+   0 4 * * 1 /usr/local/Plone/zinstance/bin/plonectl restart
+
+to the ``plone_daemon``'s crontab.
+
 Various Configuration Settings in Plone
 ---------------------------------------
 
@@ -324,4 +330,3 @@ TODO
 - Setup ufw firewall.
 - Setup regular database packing.
 - Change admin password in the root ZMI (8080:manage).
-- Restart Plone periodically.
