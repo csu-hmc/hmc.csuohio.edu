@@ -34,6 +34,10 @@ Or running Plone commands::
    (server)$ sudo -u plone_daemon bin/plonectl start
    (server)$ sudo -u plone_daemon bin/plonectl restart
 
+If you want to restart the server instnace (computer) you can use::
+
+   (server)$ sudo shutdown -r now
+
 Using Fabric
 ------------
 
