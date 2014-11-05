@@ -10,13 +10,17 @@ from fabric.api import put, sudo, settings, cd
 zinstance_dir = '/usr/local/Plone/zinstance'
 
 
+def restart_nginx():
+    sudo('/etc/init.d/nginx restart')
+
+
 def update_nginx_conf():
     put('hmc.csuohio.edu.conf',
         '/etc/nginx/sites-available/hmc.csuohio.edu.conf', use_sudo=True)
     with settings(warn_only=True):
         sudo('ln -s /etc/nginx/sites-available/hmc.csuohio.edu.conf ' +
              '/etc/nginx/sites-enabled/hmc.csuohio.edu.conf')
-    sudo('/etc/init.d/nginx restart')
+    restart_nginx()
 
 
 def plonectl(arg):
