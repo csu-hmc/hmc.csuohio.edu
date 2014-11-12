@@ -133,6 +133,14 @@ Give me super user permissions::
    (server)$ sudo adduser <username> sudo
    (server)$ exit
 
+Remove root login permissions::
+
+   (server)$ sudo vim /etc/ssh/sshd_config
+
+Change to this::
+
+   PermitRootLogin no
+
 Now log in with ``<username>``::
 
    $ ssh <username>@54.221.204.249
@@ -182,7 +190,7 @@ Upload the nginx configuration file and create a symlink for it to enable::
 
 Use my gmail account for now for the mail smtp in Plone. Google now blocks
 attempts to login and I got supciisou login warnings from goolge. Couldn't
-fingure this out until I did this:
+figure this out until I did this:
 
 http://angelsurfer.blogspot.com/2013/04/gmail-smtp-setup-to-moodle.html
 
@@ -314,11 +322,21 @@ group. Both ``moorepants`` and ``plone_daemon`` are in the ``hmc_backup``
 group. It also set the ownsr of the copied files and directories recursively to
 ``moorepants:hmcbackup``.
 
+::
+
+   (local)$ scp copy_backup_to_home.sh hmc.csuohio.edu:/home/moorepants/
+   (server)$ chmod ug+rwx copy_backup_to_home.sh
+   (server)$ sudo chown plone_daemon:plone_group copy_backup_to_home.sh
+   (server)$ mkdir tmp_backup
+   (server)$ sudo groupadd hmc_backup
+   (server)$ sudo adduser moorepants hmc_backup
+   (server)$ sudo adduser plone_daemon hmc_backup
+   (server)$ sudo chown moorepants:hmc_backup tmp_backup
+
 Then on the 2nd and 17th day of the month a cron job runs a script on the
 moorepants.info server that uses rsync to copy the files from
 ``hmc.csuohio.edu:/home/moorepants/tmp_backup`` to
 ``moorepants.info:/home/moorepants/website-backups/hmc.csuohio.edu``.
-
 
 We should look into backing up offsite to AWS S3, for example:
 
