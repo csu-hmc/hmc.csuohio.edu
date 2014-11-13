@@ -38,6 +38,10 @@ If you want to restart the server instnace (computer) you can use::
 
    (server)$ sudo shutdown -r now
 
+If you want to edit configuration file and update on github::
+    git commit hmc.csuohio.edu.conf -m "<Insert changes made>"
+    git push origin master
+
 Using Fabric
 ------------
 
