@@ -34,7 +34,13 @@ Or running Plone commands::
    (server)$ sudo -u plone_daemon bin/plonectl start
    (server)$ sudo -u plone_daemon bin/plonectl restart
 
-If you want to restart the server instnace (computer) you can use::
+Or keeping the software up-to-date (this should be done periodically to get
+security updates)::
+
+   (server)$ sudo aptitude update
+   (server)$ sudo aptitude upgrade
+
+If you want to restart the server instance (computer) you can use::
 
    (server)$ sudo shutdown -r now
 
@@ -100,7 +106,7 @@ for the instance here::
    (local)$ chmod 600 ~/.ec2/hmckey.pem
 
 Make a webserver security group for the instance with an HTTP and SSH rule
-(i.e. only ports 80 and 22).
+(i.e. only those two ports).
 
 Now allocate an Elastic IP address for this instance then associate it with the
 instance. This is the IP I got::
